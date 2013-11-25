@@ -31,7 +31,7 @@ for (int row=0; row<10 ;row++)
         {B[row][column][0]=0;B[row][column][1]=(0.0);
         };
 
-  B[2][3][0]=10;
+  B[5][5][0]=10;
   for(int i=0; i<10; i++)    //This loops on the rows.
 	{
 		for(int j=0; j<10; j++) //This loops on the columns
@@ -66,7 +66,7 @@ cout<<"printing IFFT, D================="<<endl;
                 {
                 E[i][j][0]=0;
                 for(int k=0;k<10;k++)
-			E[i][j][0]=E[i][j][0]+(C[i][k][0] * D[k][j][0]);
+			E[i][j][0]=E[i][j][0]+(C[i][k][0] * D[k][j][0] - C[i][k][1] * D[k][j][1]);
                 }
                 cout << endl;
         }
