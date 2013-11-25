@@ -1,0 +1,5 @@
+should be compiled with 
+
+g++ 2d.cc -lfftw3 -lm
+
+flags.
