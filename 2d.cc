@@ -75,17 +75,7 @@ cout<<"printing IFFT, D================="<<endl;
 			}
 		}
 
-                cout << endl;
-        }
-
-cout<<"printing IFFT, E================="<<endl;
-  for(int i=0; i<100; i++)    //This loops on the rows.
-        {
-                for(int j=0; j<100; j++) //This loops on the columns
-                {
-                        cout << E[i][j][0]  << "  ";
-                }
-                cout << endl;
+          
         }
 
 
@@ -100,7 +90,7 @@ cout<<"printing IFFT, F================="<<endl;
                 {
                         //cout << F[i][j][0]  << "  ";
                         result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t';
-			result <<F[i][j][0]  <<'\t';
+			            //result <<F[i][j][0]  <<'\t';
                 }
                 result << endl;
         }
