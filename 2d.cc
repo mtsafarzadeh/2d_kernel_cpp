@@ -8,49 +8,52 @@ using namespace std;
 
 int main ()
 {
-  ofstream myfile;
-//  myfile.open("2d.txt");
-
+  ofstream result,kernel,image;
+  result.open("result.txt");
+  kernel.open("kernel.txt");
+  image.open("image.txt");
   fftw_plan p;
-  fftw_complex A[10][10];
-  fftw_complex B[10][10]; 
-  fftw_complex C[10][10];
-  fftw_complex D[10][10];
-  fftw_complex E[10][10];
-  fftw_complex F[10][10];
+  fftw_complex A[100][100];
+  fftw_complex B[100][100]; 
+  fftw_complex C[100][100];
+  fftw_complex D[100][100];
+  fftw_complex E[100][100];
+  fftw_complex F[100][100];
 //  A = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
 //  B = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
 //  C = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
-  for (int row=0; row<10 ;row++) 
-    for (int column=0;column<10;column++)
-	{A[row][column][0]=exp(-1*( pow( pow(abs(row-5.),2.) + pow(abs(column-5.),2.) ,0.5 ) ) );A[row][column][1]=(0.0);
+  for (int row=0; row<100 ;row++) 
+    for (int column=0;column<100;column++)
+	{A[row][column][0]=exp(-1*( pow( pow(abs(row-50.),2.) + pow(abs(column-50.),2.) ,0.5 ) ) );A[row][column][1]=(0.0);
 	};
 
-for (int row=0; row<10 ;row++)
-    for (int column=0;column<10;column++)
+for (int row=0; row<100 ;row++)
+    for (int column=0;column<100;column++)
         {B[row][column][0]=0;B[row][column][1]=(0.0);
         };
 
-  B[5][5][0]=10;
-  for(int i=0; i<10; i++)    //This loops on the rows.
+  B[49][49][0]=10;
+  for(int i=0; i<100; i++)    //This loops on the rows.
 	{
-		for(int j=0; j<10; j++) //This loops on the columns
+		for(int j=0; j<100; j++) //This loops on the columns
 		{
-			cout << A[i][j][0]  << "  ";
+			kernel<< A[i][j][0]  <<'\t';
+			image<< B[i][j][0]<<'\t';
 		}
-		cout << endl;
+		kernel << endl;
+		image << endl;
 	}
-  p=fftw_plan_dft_2d(10,10,&A[0][0],&C[0][0], FFTW_FORWARD, FFTW_ESTIMATE);
+  p=fftw_plan_dft_2d(100,100,&A[0][0],&C[0][0], FFTW_FORWARD, FFTW_ESTIMATE);
   fftw_execute(p); 
   fftw_destroy_plan(p);
 
-  p=fftw_plan_dft_2d(10,10,&B[0][0],&D[0][0], FFTW_FORWARD, FFTW_ESTIMATE);
+  p=fftw_plan_dft_2d(100,100,&B[0][0],&D[0][0], FFTW_FORWARD, FFTW_ESTIMATE);
   fftw_execute(p); 
   fftw_destroy_plan(p);
 cout<<"printing IFFT, D================="<<endl;
-  for(int i=0; i<10; i++)    //This loops on the rows.
+  for(int i=0; i<100; i++)    //This loops on the rows.
         {
-                for(int j=0; j<10; j++) //This loops on the columns
+                for(int j=0; j<100; j++) //This loops on the columns
                 {
                         cout << D[i][j][0]  << "  ";
                 }
@@ -60,21 +63,25 @@ cout<<"printing IFFT, D================="<<endl;
 
 // MATRIX MULTIPLICATION ************//
 
-  for(int i=0; i<10; i++)    //This loops on the rows.
+  for(int i=0; i<100; i++)    //This loops on the rows.
         {
-                for(int j=0; j<10; j++) //This loops on the columns
+                for(int j=0; j<100; j++) //This loops on the columns
                 {
                 E[i][j][0]=0;
-                for(int k=0;k<10;k++)
+                for(int k=0;k<100;k++)
+			{
 			E[i][j][0]=E[i][j][0]+(C[i][k][0] * D[k][j][0] - C[i][k][1] * D[k][j][1]);
-                }
+                	E[i][j][1]=E[i][j][1]+(C[i][k][0] * D[k][j][1] + C[i][k][1] * D[k][j][0]);
+			}
+		}
+
                 cout << endl;
         }
 
 cout<<"printing IFFT, E================="<<endl;
-  for(int i=0; i<10; i++)    //This loops on the rows.
+  for(int i=0; i<100; i++)    //This loops on the rows.
         {
-                for(int j=0; j<10; j++) //This loops on the columns
+                for(int j=0; j<100; j++) //This loops on the columns
                 {
                         cout << E[i][j][0]  << "  ";
                 }
@@ -82,20 +89,24 @@ cout<<"printing IFFT, E================="<<endl;
         }
 
 
-p=fftw_plan_dft_2d(10,10,&E[0][0],&F[0][0], FFTW_BACKWARD, FFTW_ESTIMATE);
+p=fftw_plan_dft_2d(100,100,&E[0][0],&F[0][0], FFTW_BACKWARD, FFTW_ESTIMATE);
   fftw_execute(p);
   fftw_destroy_plan(p);
 
 cout<<"printing IFFT, F================="<<endl;
-  for(int i=0; i<10; i++)    //This loops on the rows.
+  for(int i=0; i<100; i++)    //This loops on the rows.
         {
-                for(int j=0; j<10; j++) //This loops on the columns
+                for(int j=0; j<100; j++) //This loops on the columns
                 {
-                        cout << F[i][j][0]  << "  ";
+                        //cout << F[i][j][0]  << "  ";
+                        //result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t';
+			result <<F[i][j][0]  <<'\t';
                 }
-                cout << endl;
+                result << endl;
         }
-//  myfile.close();
+  result.close();
+  kernel.close();
+  image.close();
 /*
   
   fftw_complex *in, *out;
