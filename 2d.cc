@@ -13,15 +13,15 @@ int main ()
   kernel.open("kernel.txt");
   image.open("image.txt");
   fftw_plan p;
-  fftw_complex A[100][100];
-  fftw_complex B[100][100]; 
-  fftw_complex C[100][100];
-  fftw_complex D[100][100];
-  fftw_complex E[100][100];
-  fftw_complex F[100][100];
-//  A = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
-//  B = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
-//  C = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) *100);
+  
+  // all the matrices X[][][0] is the real part and X[][][1] is the imaginary part 
+  fftw_complex A[100][100]; //saves the kernel (here is a gaussian )
+  fftw_complex B[100][100]; // image before convolution, here is  point source
+  fftw_complex C[100][100];  // FFT of kernel
+  fftw_complex D[100][100];  // FFT of image
+  fftw_complex E[100][100];  // saves the multiplication of  C and D
+  fftw_complex F[100][100];  // the IFFT of E  ( the final result of convolution)
+
   for (int row=0; row<100 ;row++) 
     for (int column=0;column<100;column++)
 	{A[row][column][0]=exp(-1*( pow( pow(abs(row-50.),2.) + pow(abs(column-50.),2.) ,0.5 ) ) );A[row][column][1]=(0.0);
@@ -99,7 +99,7 @@ cout<<"printing IFFT, F================="<<endl;
                 for(int j=0; j<100; j++) //This loops on the columns
                 {
                         //cout << F[i][j][0]  << "  ";
-                        //result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t';
+                        result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t';
 			result <<F[i][j][0]  <<'\t';
                 }
                 result << endl;
