@@ -50,15 +50,6 @@ for (int row=0; row<100 ;row++)
   p=fftw_plan_dft_2d(100,100,&B[0][0],&D[0][0], FFTW_FORWARD, FFTW_ESTIMATE);
   fftw_execute(p); 
   fftw_destroy_plan(p);
-cout<<"printing IFFT, D================="<<endl;
-  for(int i=0; i<100; i++)    //This loops on the rows.
-        {
-                for(int j=0; j<100; j++) //This loops on the columns
-                {
-                        cout << D[i][j][0]  << "  ";
-                }
-                cout << endl;
-        }
 
 
 // MATRIX MULTIPLICATION ************//
@@ -83,13 +74,12 @@ p=fftw_plan_dft_2d(100,100,&E[0][0],&F[0][0], FFTW_BACKWARD, FFTW_ESTIMATE);
   fftw_execute(p);
   fftw_destroy_plan(p);
 
-cout<<"printing IFFT, F================="<<endl;
   for(int i=0; i<100; i++)    //This loops on the rows.
         {
                 for(int j=0; j<100; j++) //This loops on the columns
                 {
                         //cout << F[i][j][0]  << "  ";
-                        result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t';
+                        result << pow(pow(F[i][j][0],2)+pow(F[i][j][1],2),0.5)  <<'\t'; // saves the magnitude of the matrix elements composed of real and imaginary part of the input matrices
 			            //result <<F[i][j][0]  <<'\t';
                 }
                 result << endl;
@@ -97,15 +87,6 @@ cout<<"printing IFFT, F================="<<endl;
   result.close();
   kernel.close();
   image.close();
-/*
-  
-  fftw_complex *in, *out;
-  int N = 10;
-  int M = 10;
-  in =  (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N * M);
-  out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N * M);
-  p = fftw_plan_dft_2d(N,M, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
-//  fftw_execute(p);  repeat as needed 
-*/
+
   return 0;
 }
